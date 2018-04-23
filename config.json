@@ -1,0 +1,21 @@
+
+{
+  "bind" : ":8080",
+  "endpoints" : [
+    {
+      "uri" : "/test",
+      "method" : "GET",
+      "status" : 200,
+      "response" : "Hello World"
+    },
+    {
+      "uri" : "/",
+      "method" : "GET",
+      "status" : 200,
+      "response" : {
+        "test" : "this is jason"
+      }
+    }
+
+  ]
+}
