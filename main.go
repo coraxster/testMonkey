@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"time"
+	"expvar"
 )
 
 func main(){
@@ -24,6 +25,7 @@ func main(){
 	}
 	for _, ep := range conf.Endpoints {
 		http.HandleFunc(ep.Uri, func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
 			w.WriteHeader(ep.Status)
 			w.Write(ep.Response)
 
@@ -35,6 +37,10 @@ func main(){
 			fo.Write(body)
 		})
 	}
+
+	// useful feature. we can publish for debug vars. then get them /debug/vars
+	expvar.Publish("varname", expvar.Func(func() interface{} { return conf }))
+
 	if err := http.ListenAndServe(conf.Bind, nil); err != nil {
 		panic(err)
 	}
